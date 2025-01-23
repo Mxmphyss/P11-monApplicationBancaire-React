@@ -1,7 +1,4 @@
 import React from 'react'
-import { Helmet } from 'react-helmet';
-import Footer from '../containers/Footer/footer';
-import Menu from '../containers/Menu/menu';
 import "../styles/css/main.css"
 
 const Home = () => {
@@ -9,17 +6,6 @@ const Home = () => {
   return (
   
   <>
-    <Helmet>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Argent Bank - Home Page</title>
-        <link rel="stylesheet" href="../styles/css/main.css" />
-        <link
-          rel="stylesheet"
-          href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-        />
-    </Helmet>
-    <Menu />
     <main>
       <div className="hero">
         <section className="hero-content">
@@ -65,7 +51,6 @@ const Home = () => {
         </div>
       </section>
     </main>
-    <Footer />
   </>
   );
 }
