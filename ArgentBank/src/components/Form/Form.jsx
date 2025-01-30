@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { loginSuccess, loginFailure } from '../../redux/reducers/authReducer';
+import { useNavigate } from 'react-router-dom';
+
+import { login } from '../../redux/actions/loginActions';
 
 const Form = () => {
 
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
   e.preventDefault(); 
@@ -19,23 +22,21 @@ const Form = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ email, password }),
     });
 
     const data = await response.json();
 
     if (response.ok) {
-
-      dispatch(loginSuccess(data.body.token));
+      dispatch(login(data.body.token));
+      navigate('/user')
       console.log('Connexion réussie', data);
     } else {
-
-      dispatch(loginFailure(data.message));
+      setError('Email ou mot de passe incorrect');
       console.error('Erreur de connexion :', data.message);
     }
   } catch (error) {
-    dispatch(loginFailure('Erreur réseau'));
-    console.error('Erreur réseau :', error);
+    console.error('Erreur :', error);
   }
 
   };
@@ -43,20 +44,19 @@ const Form = () => {
     return (
         <form onSubmit={handleSubmit}>
             <div className="input-wrapper">
-              <label for="username">Username</label>
-              <input type="text" id="username" required/>
+              <label htmlFor="username">Username</label>
+              <input type="email" id="email" value={email} onChange={(e)=>setEmail(e.target.value)} required/>
             </div>
             <div className="input-wrapper">
-              <label for="password">Password</label>
-              <input type="password" id="password" required/>
+              <label htmlFor="password">Password</label>
+              <input type="password" id="password" value={password} onChange={(e)=>setPassword(e.target.value)} required/>
             </div>
             <div className="input-remember">
               <input type="checkbox" id="remember-me" />
-              <label for="remember-me">Remember me</label>
+              <label htmlFor="remember-me">Remember me</label>
             </div>
-            <Link to="/user">
-              <button type="submit" className="sign-in-button">Sign In</button>
-            </Link>
+            <button type="submit" className="sign-in-button">Sign In</button>
+            {error && <p className="error">{error}</p>}
         </form>
     );
 };
