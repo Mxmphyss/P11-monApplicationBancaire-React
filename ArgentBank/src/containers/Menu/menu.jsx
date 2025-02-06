@@ -1,50 +1,47 @@
-import React, { useEffect, useState } from 'react';
-import { logout } from '../../redux/actions/loginActions';
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../../redux/actions/loginActions';
 
 const Menu = () => {
-  const token = useSelector((state) => state.token);
-  const dispatch = useDispatch();
-  const [isAuthenticated, setIsAuthenticated] = useState(localStorage.token === token);
+  const token = useSelector((state) => state.auth.token);
+  const user = useSelector((state) => state.user.userName);
 
-  useEffect(() => {
-    setIsAuthenticated(localStorage.token === token);
-  }, [token]);
+  console.log('user:', user);
+
+  const dispatch = useDispatch();
+
+  const isAuthenticated = token !== '';
 
   const handleLogout = () => {
     dispatch(logout());
-    localStorage.removeItem('token');
-    setIsAuthenticated(false);
-  }
+  };
 
   return (
     <nav className="main-nav">
       <Link to="/" className="main-nav-logo">
-        <img
-          className="main-nav-logo-image"
-          src="./img/argentBankLogo.png"
-          alt="Argent Bank Logo"
-        />
+        <img src="./img/argentBankLogo.png" alt="Argent Bank Logo" className="main-nav-logo-image" />
       </Link>
       <h1 className="sr-only">Argent Bank</h1>
-      { !isAuthenticated ? 
-        <Link to="/login" className="main-nav-item" >
-          <div>
+      {isAuthenticated ? (
+        <div className='userBoard'>
+          <div className='userBoard_user'>
+            <p className='userStyle'>{ user }</p>
             <i className="fa fa-user-circle"></i>
-            Sign In
           </div>
-        </Link>
-        : 
-        <Link onClick={handleLogout} to="/" className="main-nav-item">
-          <div>
+          <Link to="/" onClick={handleLogout} className="main-nav-item">
+            Sign Out
             <i className="fa fa-user-circle"></i>
-            Sign out
-          </div>
+          </Link>
+        </div>
+      ) : (
+        <Link to="/login" className="main-nav-item">
+          <i className="fa fa-user-circle"></i>
+          Sign In
         </Link>
-      }
+      )}
     </nav>
   );
-}
+};
 
 export default Menu;

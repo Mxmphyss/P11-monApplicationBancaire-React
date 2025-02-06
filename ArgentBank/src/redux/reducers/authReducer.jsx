@@ -1,19 +1,23 @@
 const initialState = {
-  token: localStorage.getItem('token') || ''
+  token: localStorage.getItem('token') || '',
 };
 
 const LOGIN = 'LOGIN';
 const LOGOUT = 'LOGOUT';
 
 const loginReducer = (state = initialState, action) => {
+
+  console.log('Action:', action);
+  console.log('State:', state);
+
   switch (action.type) {
-    case 'LOGIN':
+    case LOGIN:
       localStorage.setItem('token', action.payload.token);
       return {
         ...state,
         token: action.payload.token,
       };
-    case 'LOGOUT':
+    case LOGOUT:
       localStorage.removeItem('token');
       return {
         ...state,

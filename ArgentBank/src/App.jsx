@@ -6,6 +6,7 @@ import User from "./pages/user";
 import "./styles/css/main.css";
 import Menu from "./containers/Menu/menu";
 import Footer from "./containers/Footer/footer";
+import 'font-awesome/css/font-awesome.min.css';
 
 function App() {
   return (
